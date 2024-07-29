@@ -126,7 +126,8 @@ def get_model(args, device):
         device=device,
         residuals=True,
         encode_distances=False,
-        l2_norm=False
+        l2_norm=False,
+        predict=False
     ).to(device)
 
     time_end = time.process_time()
@@ -284,7 +285,7 @@ def main():
 
     OUT_PATH = "result_BREC"
     NAME = "Model_Name"
-    DATASET_NAME = "Dataset_Name"
+    DATASET_NAME = "brec_v3.npy"
     path = os.path.join(OUT_PATH, NAME)
     os.makedirs(path, exist_ok=True)
 
