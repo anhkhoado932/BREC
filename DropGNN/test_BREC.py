@@ -121,7 +121,7 @@ def get_dataset(name, device):
 
     # Do something
     def makefeatures(data):
-        data.x = torch.ones((data.num_nodes, 1))
+        data.x = torch.ones((data.num_nodes, 1),dtype=torch.double)
         data.id = torch.tensor(
             np.random.permutation(np.arange(data.num_nodes))
         ).unsqueeze(1)
