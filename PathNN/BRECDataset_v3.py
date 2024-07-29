@@ -33,7 +33,7 @@ class ModifData(Data) :
         else:
             return 0
 
-class BRECPathDataset(InMemoryDataset) :
+class BRECDataset(InMemoryDataset) :
     """
     Computes paths for all nodes in graphs and convert it to pytorch dataset object. 
     """ 
