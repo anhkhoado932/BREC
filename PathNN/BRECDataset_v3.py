@@ -81,7 +81,7 @@ class BRECDataset(InMemoryDataset) :
     def process(self):
         self.Gs = np.load(self.raw_paths[0], allow_pickle=True)
         self.Gs = [graph6_to_pyg(G) for G in self.Gs]
-        self.features = [torch.ones((G.num_nodes, 1)) for G in self.Gs]
+        self.features = [torch.ones((G.num_nodes, 1), dtype=torch.Double) for G in self.Gs]
 
 
         if all([self.path_type is not None, self.cutoff >= 2]) :
