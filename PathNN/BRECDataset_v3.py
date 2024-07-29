@@ -85,9 +85,9 @@ class BRECDataset(InMemoryDataset) :
 
 
         if all([self.path_type is not None, self.cutoff >= 2]) :
-            self.Gs =  [ig.Graph.from_networkx(to_networkx(g, to_undirected=True)) for g in self.Gs]            
+            self.gs =  [ig.Graph.from_networkx(to_networkx(g, to_undirected=True)) for g in self.Gs]            
             self.graph_info = list()
-            for g in tqdm(self.Gs) : 
+            for g in tqdm(self.gs) : 
                 self.graph_info.append(fast_generate_paths2(g, self.cutoff, self.path_type, undirected=self.undirected))
             self.diameter = max([i[1] for i in self.graph_info])
         else : 
@@ -106,7 +106,7 @@ class BRECDataset(InMemoryDataset) :
 
 
     def _create_data(self, index) : 
-        data = ModifData(**from_networkx(self.Gs[index]).stores[0])
+        data = ModifData(**self.Gs[index].stores[0])
         data.x = torch.DoubleTensor(self.features[index])
         # data.y = torch.LongTensor([self.y[index]])
 
