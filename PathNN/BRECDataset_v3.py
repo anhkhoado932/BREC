@@ -73,8 +73,8 @@ class BRECDataset(InMemoryDataset) :
     def processed_file_names(self):
         return ["brec_v3.pt"]
       
-    def len(self) : 
-        return len(self.Gs)
+    # def len(self) : 
+    #     return len(self.Gs)
     
     # def num_nodes(self) : 
     #     return sum([G.number_of_nodes() for G in self.Gs])
@@ -100,7 +100,7 @@ class BRECDataset(InMemoryDataset) :
         if self.pre_transform is not None:
             self.Gs = [self.pre_transform(data) for data in tqdm(self.Gs)]
         
-        self.data = [self._create_data(i) for i in range(self.len())]
+        self.data = [self._create_data(i) for i in range(len(self.Gs))]
 
         self.data, self.slices = self.collate(self.data)
         torch.save((self.data, self.slices), self.processed_paths[0])
