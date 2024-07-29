@@ -128,10 +128,6 @@ class BRECDataset(InMemoryDataset) :
                 if self.path_type == 'all_simple_paths' : 
                     setattr(data, f"sp_dists_{jj+2}", torch.empty(0,jj+2).long())
         return data 
-
-    def get(self, index) : 
-        return self.datalist[index]
-
        
 class PathTransform(object):
     def __init__(self, path_type, cutoff, r = None):
