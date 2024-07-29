@@ -56,6 +56,7 @@ class BRECDataset(InMemoryDataset) :
         self.undirected = undirected
 
         super().__init__(root, transform, pre_transform, pre_filter)
+        self.data, self.slices = torch.load(self.processed_paths[0])
         # self.features = features
         # self.y = y 
   
@@ -99,10 +100,10 @@ class BRECDataset(InMemoryDataset) :
         if self.pre_transform is not None:
             self.Gs = [self.pre_transform(data) for data in tqdm(self.Gs)]
         
-        self.datalist = [self._create_data(i) for i in range(self.len())]
+        self.data = [self._create_data(i) for i in range(self.len())]
 
-        data, slices = self.collate(self.Gs)
-        torch.save((data, slices), self.processed_paths[0])
+        self.data, self.slices = self.collate(self.data)
+        torch.save((self.data, self.slices), self.processed_paths[0])
 
 
     def _create_data(self, index) : 
