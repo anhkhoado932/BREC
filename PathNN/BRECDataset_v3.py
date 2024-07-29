@@ -85,7 +85,7 @@ class BRECDataset(InMemoryDataset) :
 
 
         if all([self.path_type is not None, self.cutoff >= 2]) :
-            self.Gs =  [ig.Graph.from_networkx(g) for g in self.Gs]            
+            self.Gs =  [ig.Graph.from_networkx(to_networkx(g, to_undirected=True)) for g in self.Gs]            
             self.graph_info = list()
             for g in tqdm(self.Gs) : 
                 self.graph_info.append(fast_generate_paths2(g, self.cutoff, self.path_type, undirected=self.undirected))
