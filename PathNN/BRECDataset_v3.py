@@ -51,23 +51,13 @@ class BRECDataset(InMemoryDataset) :
         # self.Gs = Gs
         self.root = root
         self.name = name
-
-        super().__init__(root, transform, pre_transform, pre_filter)
-        # self.features = features
-        # self.y = y 
         self.cutoff = cutoff
         self.path_type = path_type 
         self.undirected = undirected
 
-        if all([self.path_type is not None, cutoff >= 2]) :
-            self.Gs =  [ig.Graph.from_networkx(g) for g in self.Gs]            
-            self.graph_info = list()
-            for g in tqdm(self.Gs) : 
-                self.graph_info.append(fast_generate_paths2(g, cutoff, path_type, undirected=undirected))
-            self.diameter = max([i[1] for i in self.graph_info])
-        else : 
-            self.diameter = cutoff
-        self.min_length = min_length
+        super().__init__(root, transform, pre_transform, pre_filter)
+        # self.features = features
+        # self.y = y 
   
     @property
     def processed_dir(self):
@@ -92,6 +82,16 @@ class BRECDataset(InMemoryDataset) :
         self.Gs = np.load(self.raw_paths[0], allow_pickle=True)
         self.Gs = [graph6_to_pyg(G) for G in self.Gs]
         self.features = [torch.ones((G.num_nodes, 1)) for G in self.Gs]
+
+
+        if all([self.path_type is not None, self.cutoff >= 2]) :
+            self.Gs =  [ig.Graph.from_networkx(g) for g in self.Gs]            
+            self.graph_info = list()
+            for g in tqdm(self.Gs) : 
+                self.graph_info.append(fast_generate_paths2(g, self.cutoff, self.path_type, undirected=self.undirected))
+            self.diameter = max([i[1] for i in self.graph_info])
+        else : 
+            self.diameter = self.cutoff
 
         if self.pre_filter is not None:
             self.Gs = [data for data in self.Gs if self.pre_filter(data)]
