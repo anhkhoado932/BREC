@@ -47,7 +47,7 @@ class BRECDataset(InMemoryDataset) :
                 undirected = True,pre_transform=None,
                 pre_filter=None,
                 ): 
-        super().__init__()
+        # super().__init__()
         # self.Gs = Gs
         self.root = root
         self.name = name
