@@ -62,7 +62,7 @@ parser.add_argument("--MARGIN", type=float, default=MARGIN)
 parser.add_argument("--LOSS_THRESHOLD", type=float, default=LOSS_THRESHOLD)
 parser.add_argument("--device", type=int, default=0)
 parser.add_argument("--cutoff", type=int, default=3)
-parser.add_argument("--path-type", type=int, default="shortest_path")
+parser.add_argument("--path-type", type=str, default="shortest_path")
 
 # General settings.
 args = parser.parse_args()
