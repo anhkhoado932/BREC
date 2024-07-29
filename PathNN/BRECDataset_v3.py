@@ -49,6 +49,9 @@ class BRECPathDataset(InMemoryDataset) :
                 ): 
         super().__init__()
         # self.Gs = Gs
+        self.root = root
+        self.name = name
+
         super().__init__(root, transform, pre_transform, pre_filter)
         # self.features = features
         # self.y = y 
