@@ -108,7 +108,7 @@ class BRECDataset(InMemoryDataset) :
 
     def _create_data(self, index) : 
         data = ModifData(**self.Gs[index].stores[0])
-        data.x = torch.DoubleTensor(self.features[index])
+        data.x = torch.FloatTensor(self.features[index])
         # data.y = torch.LongTensor([self.y[index]])
 
         setattr(data, f'path_2', data.edge_index.T.flip(1))
