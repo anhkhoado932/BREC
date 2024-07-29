@@ -102,7 +102,11 @@ def get_dataset(name, device):
     time_start = time.process_time()
 
     # Do something
-    dataset = BRECDataset(name=name, cutoff=CUTOFF, path_type=PATH_TYPE)
+    dataset = BRECDataset(
+        name=name, 
+        cutoff=CUTOFF, 
+        path_type=PATH_TYPE,
+    )
 
     time_end = time.process_time()
     time_cost = round(time_end - time_start, 2)

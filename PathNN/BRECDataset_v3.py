@@ -38,7 +38,6 @@ class BRECPathDataset(InMemoryDataset) :
     Computes paths for all nodes in graphs and convert it to pytorch dataset object. 
     """ 
     def __init__(self, 
-                features, 
                 cutoff, 
                 path_type, 
                 name="no_param",
@@ -51,7 +50,7 @@ class BRECPathDataset(InMemoryDataset) :
         super().__init__()
         # self.Gs = Gs
         super().__init__(root, transform, pre_transform, pre_filter)
-        self.features = features
+        # self.features = features
         # self.y = y 
         self.cutoff = cutoff
         self.path_type = path_type 
@@ -88,7 +87,8 @@ class BRECPathDataset(InMemoryDataset) :
 
     def process(self):
         self.Gs = np.load(self.raw_paths[0], allow_pickle=True)
-        self.Gs = [graph6_to_pyg(data) for data in self.Gs]
+        self.Gs = [graph6_to_pyg(G) for G in self.Gs]
+        self.features = [torch.ones((G.num_nodes, 1)) for G in self.Gs]
 
         if self.pre_filter is not None:
             self.Gs = [data for data in self.Gs if self.pre_filter(data)]
@@ -109,15 +109,15 @@ class BRECPathDataset(InMemoryDataset) :
 
         setattr(data, f'path_2', data.edge_index.T.flip(1))
         if self.path_type == 'all_simple_paths' : 
-            setattr(data, f"sp_dists_2", torch.LongTensor(self.graph_info[index][2][0]).flip(1))
+            setattr(data, f"sp_dists_2", torch.LongTensor(np.array(self.graph_info[index][2][0])).flip(1))
         #setattr(data, f'distances_2', torch.cat([torch.zeros(data.edge_index.size(0), 1), torch.ones(data.edge_index.size(0),1)], dim = 1))
         for jj in range(1, self.cutoff - 1) : 
 
-            paths = torch.LongTensor(self.graph_info[index][0][jj]).view(-1,jj+2)
+            paths = torch.LongTensor(np.array(self.graph_info[index][0][jj])).view(-1,jj+2)
             if paths.size(0) > 0 : 
                 setattr(data, f'path_{jj+2}', paths.flip(1))
                 if self.path_type == 'all_simple_paths' : 
-                    setattr(data, f"sp_dists_{jj+2}", torch.LongTensor(self.graph_info[index][2][jj]).flip(1))
+                    setattr(data, f"sp_dists_{jj+2}", torch.LongTensor(np.array(self.graph_info[index][2][jj])).flip(1))
             else : 
                 setattr(data, f'path_{jj+2}', torch.empty(0,jj+2).long())
                 
