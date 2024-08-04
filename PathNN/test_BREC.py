@@ -285,7 +285,7 @@ def evaluation(dataset, model, path, device, args):
 
 
 def main():
-    device = torch.device(f"cuda:{args.device}" if torch.cuda.is_available() else "cpu")
+    device = torch.device(f"cuda" if torch.cuda.is_available() else "cpu")
 
     OUT_PATH = "result_BREC"
     NAME = "Model_Name"
